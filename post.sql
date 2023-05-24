@@ -26,20 +26,36 @@ CREATE TABLE repost (
 -- foreign keys
 -- post references user.user_id_bin
 ALTER TABLE post 
-	ADD FOREIGN KEY (user_id) REFERENCES user.user_id_bin;
+	ADD FOREIGN KEY (user_id) REFERENCES user(user_id_bin);
 
 -- repost references post.post_id_bin
 ALTER TABLE repost 
-	ADD FOREIGN KEY (post_id) REFERENCES post.post_id_bin;
+	ADD FOREIGN KEY (post_id) REFERENCES post(post_id_bin);
     
 -- repost references user.user_id_bin
 ALTER TABLE repost 
-	ADD FOREIGN KEY (reposted_from_user_id) REFERENCES user.user_id_bin;
+	ADD FOREIGN KEY (reposted_from_user_id) REFERENCES user(user_id_bin);
     
 -- repost references user.user_id_bin
-ALTER TABLE post 
-	ADD FOREIGN KEY (reposted_by_user_id) REFERENCES user.user_id_bin;
+ALTER TABLE repost 
+	ADD FOREIGN KEY (reposted_by_user_id) REFERENCES user(user_id_bin);
 
+-- functions
+DELIMITER $$
+CREATE FUNCTION add_post(user_id binary(16), content varchar(2000))  
+RETURNS boolean
+	BEGIN
+		INSERT INTO post (post_id_bin, user_id, content) 
+			VALUES (unhex(replace(uuid(),'-','')), user_id, content);
+    return true;    
+	END$$
+
+CREATE FUNCTION remove_post(post_id binary(16)) 
+RETURNS boolean deterministic
+	BEGIN
+		DELETE FROM post WHERE post_id_bin = post_id;
+    return TRUE;    
+	END$$    
 
     
 

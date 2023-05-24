@@ -42,6 +42,36 @@ ALTER TABLE user_follows_tag
 ALTER TABLE user_follows_tag 
 	ADD FOREIGN KEY (tag_name) REFERENCES tag.tag_name;
 
+-- functions
+DELIMITER $$
+CREATE FUNCTION create_user(username varchar(30), email varchar(255), password varchar(255))  
+RETURNS boolean deterministic
+	BEGIN
+		INSERT INTO user (user_id_bin, username, email, password) 
+			VALUES (unhex(replace(uuid(),'-','')), username, email, md5(password));
+    return true;    
+	END$$
+    
+CREATE FUNCTION add_dob(user_id binary(16), dob date)
+RETURNS boolean deterministic
+	BEGIN
+		UPDATE user 
+		SET dob = dob 
+        WHERE user_id_bin = user_id;
+	return true;
+	END $$
+
+CREATE FUNCTION add_mobile(user_id binary(16), mobile varchar(255))
+RETURNS boolean deterministic
+	BEGIN
+		UPDATE user 
+		SET mobile = mobile
+        WHERE user_id_bin = user_id;
+	return true;
+	END $$
+
+		
+
 
 
         
