@@ -23,6 +23,14 @@ CREATE TABLE repost (
     reposted_by_user_id binary(16)
 );
 
+CREATE TABLE post_likes(
+	user_id binary(16),
+	post_id binary(16),
+    PRIMARY KEY (user_id, post_id),
+    FOREIGN KEY (user_id) REFERENCES user(user_id_bin),
+    FOREIGN KEY (post_id) REFERENCES post(post_id_bin)
+);
+
 -- foreign keys
 -- post references user.user_id_bin
 ALTER TABLE post 
@@ -57,6 +65,21 @@ RETURNS boolean deterministic
     return TRUE;    
 	END$$    
 
-    
+-- like post functions
+CREATE FUNCTION like_post(user_id binary(16), post_id binary(16))  
+RETURNS boolean deterministic
+	BEGIN
+		INSERT INTO post_likes(user_id_bin, post_id_bin) 
+			VALUES (user_id, post_id);
+    return true;    
+	END$$
+
+CREATE FUNCTION unlike_post(user_id binary(16), post_id binary(16))
+RETURNS boolean deterministic
+	BEGIN
+		DELETE FROM post_likes 
+        WHERE post_id_bin = post_id AND user_id_bin = user_id;
+    return TRUE;    
+	END$$    
 
     
