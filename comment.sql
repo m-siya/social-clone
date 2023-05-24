@@ -1,10 +1,19 @@
 CREATE TABLE comment(
-	comment_id int,
-    post_id int,
-    user_id int,
+	comment_id_bin binary(16),
+	comment_id_text varchar(36) generated always as
+        (insert(
+			insert(
+				insert(
+					insert(hex(comment_id_bin), 9, 0, '-'), 
+					14,0,'-'), 
+				19,0,'-'),
+			24,0,'-')
+		) virtual,
+    post_id binary(16),
+    user_id binary(16),
     likes int DEFAULT 0,
     content varchar(2000) NOT NULL,
-    CONSTRAINT comment_pk PRIMARY KEY (comment_id)
+    CONSTRAINT comment_pk PRIMARY KEY (comment_id_bin)
 );
 
 -- foreign keys

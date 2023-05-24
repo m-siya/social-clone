@@ -22,9 +22,9 @@ ALTER TABLE post_tag
 ALTER TABLE post_tag 
 	ADD FOREIGN KEY (tag_name) REFERENCES tag.tag_name;
 
--- comment_tag references comment.comment_id
+-- comment_tag references comment.comment_id_bin
 ALTER TABLE comment_tag 
-	ADD FOREIGN KEY (comment_id) REFERENCES comment.comment_id ;
+	ADD FOREIGN KEY (comment_id) REFERENCES comment.comment_id_bin ;
     
 -- comment_tag references tag.tag_name
 ALTER TABLE comment_tag 
