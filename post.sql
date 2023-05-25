@@ -51,7 +51,7 @@ ALTER TABLE repost
 -- functions
 DELIMITER $$
 CREATE FUNCTION add_post(user_id binary(16), content varchar(2000))  
-RETURNS boolean
+RETURNS boolean deterministic
 	BEGIN
 		INSERT INTO post (post_id_bin, user_id, content) 
 			VALUES (unhex(replace(uuid(),'-','')), user_id, content);

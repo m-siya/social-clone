@@ -29,18 +29,18 @@ CREATE TABLE user(
 -- select user_id_text, username from user; 
  
 CREATE TABLE user_follows_tag(
-	user_id int,
+	user_id binary(16),
     tag_name varchar(255)
 );
 
 -- foreign keys
 -- user_follows_tag references user.user_id
 ALTER TABLE user_follows_tag 
-	ADD FOREIGN KEY (user_id) REFERENCES user.user_id;
+	ADD FOREIGN KEY (user_id) REFERENCES user(user_id_bin);
 
 -- user_follows_tag references tag_tag_name    
 ALTER TABLE user_follows_tag 
-	ADD FOREIGN KEY (tag_name) REFERENCES tag.tag_name;
+	ADD FOREIGN KEY (tag_name) REFERENCES tag(tag_name);
 
 -- functions
 DELIMITER $$
