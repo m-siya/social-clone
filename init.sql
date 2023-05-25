@@ -9,6 +9,8 @@ CREATE DATABASE social_clone
 	DEFAULT CHARACTER SET utf8
     DEFAULT COLLATE utf8_general_ci; 
     
+USE social_clone;
+    
 CREATE ROLE 'api_role', 'developer_role';
 
 GRANT ALL privileges on social_clone.* TO 'developer_role';
