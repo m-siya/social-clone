@@ -21,3 +21,5 @@ GRANT ALL PRIVILEGES ON social_clone.* TO 'dba'@'localhost';
 
 GRANT 'developer_role' TO 'dba'@'localhost';
 GRANT 'api_role' TO 'api'@'localhost';
+
+

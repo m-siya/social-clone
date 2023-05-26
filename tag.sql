@@ -13,7 +13,20 @@ CREATE TABLE comment_tag(
 	tag_name varchar(255)
 );
 
+CREATE TABLE user_follows_tag(
+	user_id binary(16),
+    tag_name varchar(255)
+);
+
 -- foreign keys
+-- user_follows_tag references user.user_id
+ALTER TABLE user_follows_tag 
+	ADD FOREIGN KEY (user_id) REFERENCES user(user_id_bin);
+
+-- user_follows_tag references tag_tag_name    
+ALTER TABLE user_follows_tag 
+	ADD FOREIGN KEY (tag_name) REFERENCES tag(tag_name);
+    
 -- post_tag references repost.post_id
 ALTER TABLE post_tag 
 	ADD FOREIGN KEY (post_id) REFERENCES repost(post_id) ;
