@@ -9,8 +9,11 @@ class UserList(generics.ListCreateAPIView):
     serializer_class = UserSerializer
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
+    model = User
     serializer_class = UserSerializer
+    def get_object(self, queryset=None):
+
+        return User.objects.get(user_id_text=self.kwargs.get("user_id_text"))
 
 @api_view(['GET'])
 def getData(request):
