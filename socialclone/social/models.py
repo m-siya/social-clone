@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+import uuid
 
 
 class AuthGroup(models.Model):
@@ -78,8 +79,8 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Comment(models.Model):
-    comment_id_bin = models.CharField(primary_key=True, max_length=16)
-    comment_id_text = models.CharField(max_length=36, blank=True, null=True)
+    comment_id_bin = models.BinaryField(primary_key=True, max_length=16, editable = False)
+  #  comment_id_text = models.CharField(max_length=36, blank=True, null=True)
     post = models.ForeignKey('Repost', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey('Repost', models.DO_NOTHING, related_name='comment_user_set', blank=True, null=True)
     likes = models.IntegerField(blank=True, null=True)
@@ -88,6 +89,19 @@ class Comment(models.Model):
     class Meta:
         managed = False
         db_table = 'comment'
+    
+    
+    def __str__(self):
+        return str(uuid(self.comment_id_bin))
+    
+    def save(self, *args, **kwargs):
+        my_uuid = uuid.uuid4()
+        # if not self.user_id_text:
+        #   self.user_id_text = my_uuid
+        if not self.comment_id_bin:
+            self.comment_id_bin = my_uuid.bytes
+       
+        super().save(*args, **kwargs)
 
 
 class CommentLikes(models.Model):
@@ -165,8 +179,8 @@ class Follower(models.Model):
 
 
 class Post(models.Model):
-    post_id_bin = models.CharField(primary_key=True, max_length=16)
-    post_id_text = models.CharField(max_length=36, blank=True, null=True)
+    post_id_bin = models.BinaryField(primary_key=True, max_length=16, editable = False)
+    #post_id_text = models.CharField(max_length=36, blank=True, null=True)
     created_on = models.DateTimeField(blank=True, null=True)
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
     likes = models.IntegerField(blank=True, null=True)
@@ -176,6 +190,17 @@ class Post(models.Model):
         managed = False
         db_table = 'post'
 
+    def __str__(self):
+        return str(uuid(self.post_id_bin))
+    
+    def save(self, *args, **kwargs):
+        my_uuid = uuid.uuid4()
+        # if not self.user_id_text:
+        #   self.user_id_text = my_uuid
+        if not self.post_id_bin:
+            self.post_id_bin = my_uuid.bytes
+       
+        super().save(*args, **kwargs)
 
 class PostLikes(models.Model):
     user = models.OneToOneField('User', models.DO_NOTHING, primary_key=True)  # The composite primary key (user_id, post_id) found, that is not supported. The first column is selected.
@@ -215,8 +240,8 @@ class Tag(models.Model):
 
 
 class User(models.Model):
-    user_id_bin = models.CharField(primary_key=True, max_length=16)
-    user_id_text = models.CharField(max_length=36, blank=True, null=True)
+    user_id_bin = models.BinaryField(primary_key=True, max_length=16, editable=False)
+   # user_id_text = models.CharField(max_length=36, blank=True, null=True)
     username = models.CharField(unique=True, max_length=30)
     email = models.CharField(unique=True, max_length=255)
     dob = models.DateField(blank=True, null=True)
@@ -227,6 +252,20 @@ class User(models.Model):
         managed = False
         db_table = 'user'
 
+    def __str__(self):
+        return uuid(self.user_id_bin)
+    
+    def save(self, *args, **kwargs):
+        my_uuid = uuid.uuid4()
+        # if not self.user_id_text:
+        #   self.user_id_text = my_uuid
+        if not self.user_id_bin:
+            self.user_id_bin = my_uuid.bytes
+       
+        
+        #print(self.user_id_bin, self.user_id_text)
+
+        super().save(*args, **kwargs)
 
 class UserFollowsTag(models.Model):
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
