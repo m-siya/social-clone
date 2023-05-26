@@ -241,7 +241,7 @@ class Tag(models.Model):
 
 class User(models.Model):
     user_id_bin = models.BinaryField(primary_key=True, max_length=16, editable=False)
-   # user_id_text = models.CharField(max_length=36, blank=True, null=True)
+    # user_id_text = models.CharField(max_length=36, blank=True, null=True)
     username = models.CharField(unique=True, max_length=30)
     email = models.CharField(unique=True, max_length=255)
     dob = models.DateField(blank=True, null=True)
