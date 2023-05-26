@@ -80,7 +80,7 @@ class AuthUserUserPermissions(models.Model):
 
 class Comment(models.Model):
     comment_id_bin = models.BinaryField(primary_key=True, max_length=16, editable = False)
-  #  comment_id_text = models.CharField(max_length=36, blank=True, null=True)
+    comment_id_text = models.CharField(max_length=36, blank=True, null=True, editable=False)
     post = models.ForeignKey('Repost', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey('Repost', models.DO_NOTHING, related_name='comment_user_set', blank=True, null=True)
     likes = models.IntegerField(blank=True, null=True)
@@ -96,8 +96,8 @@ class Comment(models.Model):
     
     def save(self, *args, **kwargs):
         my_uuid = uuid.uuid4()
-        # if not self.user_id_text:
-        #   self.user_id_text = my_uuid
+        if not self.user_id_text:
+            self.user_id_text = my_uuid
         if not self.comment_id_bin:
             self.comment_id_bin = my_uuid.bytes
        
@@ -180,7 +180,7 @@ class Follower(models.Model):
 
 class Post(models.Model):
     post_id_bin = models.BinaryField(primary_key=True, max_length=16, editable = False)
-    #post_id_text = models.CharField(max_length=36, blank=True, null=True)
+    post_id_text = models.CharField(max_length=36, blank=True, null=True, editable=False)
     created_on = models.DateTimeField(blank=True, null=True)
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
     likes = models.IntegerField(blank=True, null=True)
@@ -195,8 +195,8 @@ class Post(models.Model):
     
     def save(self, *args, **kwargs):
         my_uuid = uuid.uuid4()
-        # if not self.user_id_text:
-        #   self.user_id_text = my_uuid
+        if not self.user_id_text:
+           self.user_id_text = my_uuid
         if not self.post_id_bin:
             self.post_id_bin = my_uuid.bytes
        
@@ -241,7 +241,7 @@ class Tag(models.Model):
 
 class User(models.Model):
     user_id_bin = models.BinaryField(primary_key=True, max_length=16, editable=False)
-    # user_id_text = models.CharField(max_length=36, blank=True, null=True)
+    user_id_text = models.UUIDField(editable=False)
     username = models.CharField(unique=True, max_length=30)
     email = models.CharField(unique=True, max_length=255)
     dob = models.DateField(blank=True, null=True)
@@ -257,8 +257,8 @@ class User(models.Model):
     
     def save(self, *args, **kwargs):
         my_uuid = uuid.uuid4()
-        # if not self.user_id_text:
-        #   self.user_id_text = my_uuid
+        if not self.user_id_text:
+           self.user_id_text = my_uuid
         if not self.user_id_bin:
             self.user_id_bin = my_uuid.bytes
        
