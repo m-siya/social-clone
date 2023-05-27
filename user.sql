@@ -6,15 +6,7 @@
 
 CREATE TABLE user(
 		user_id_bin binary(16),
-        user_id_text varchar(36) generated always as
-        (insert(
-			insert(
-				insert(
-					insert(hex(user_id_bin), 9, 0, '-'), 
-					14,0,'-'), 
-				19,0,'-'),
-			24,0,'-')
-		) virtual,
+        user_id_text varchar(36),
         username varchar(30) NOT NULL UNIQUE,
         email varchar(255) NOT NULL UNIQUE,
         dob date,

@@ -1,14 +1,6 @@
 CREATE TABLE post(
 	post_id_bin binary(16),
-	post_id_text varchar(36) generated always as
-        (insert(
-			insert(
-				insert(
-					insert(hex(post_id_bin), 9, 0, '-'), 
-					14,0,'-'), 
-				19,0,'-'),
-			24,0,'-')
-		) virtual,
+	post_id_text varchar(36),
     created_on datetime DEFAULT current_timestamp,
     user_id binary(16),
     likes int DEFAULT 0,
