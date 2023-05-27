@@ -2,43 +2,43 @@ CREATE TABLE post(
 	post_id_bin binary(16),
 	post_id_text varchar(36),
     created_on datetime DEFAULT current_timestamp,
-    user_id binary(16),
+    user_id varchar(36),
     likes int DEFAULT 0,
     content varchar(2000) NOT NULL,
-    CONSTRAINT post_pk PRIMARY KEY (post_id_bin)
+    CONSTRAINT post_pk PRIMARY KEY (post_id_text)
 );
 
 -- reposts
 CREATE TABLE repost (
-	post_id binary(16),
-    reposted_from_user_id binary(16),
-    reposted_by_user_id binary(16)
+	post_id varchar(36),
+    reposted_from_user_id varchar(36),
+    reposted_by_user_id varchar(36)
 );
 
 CREATE TABLE post_likes(
-	user_id binary(16),
-	post_id binary(16),
+	user_id varchar(36),
+	post_id varchar(36),
     PRIMARY KEY (user_id, post_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id_bin),
-    FOREIGN KEY (post_id) REFERENCES post(post_id_bin)
+    FOREIGN KEY (user_id) REFERENCES user(user_id_text),
+    FOREIGN KEY (post_id) REFERENCES post(post_id_text)
 );
 
 -- foreign keys
 -- post references user.user_id_bin
 ALTER TABLE post 
-	ADD FOREIGN KEY (user_id) REFERENCES user(user_id_bin);
+	ADD FOREIGN KEY (user_id) REFERENCES user(user_id_text);
 
 -- repost references post.post_id_bin
 ALTER TABLE repost 
-	ADD FOREIGN KEY (post_id) REFERENCES post(post_id_bin);
+	ADD FOREIGN KEY (post_id) REFERENCES post(post_id_text);
     
 -- repost references user.user_id_bin
 ALTER TABLE repost 
-	ADD FOREIGN KEY (reposted_from_user_id) REFERENCES user(user_id_bin);
+	ADD FOREIGN KEY (reposted_from_user_id) REFERENCES user(user_id_text);
     
 -- repost references user.user_id_bin
 ALTER TABLE repost 
-	ADD FOREIGN KEY (reposted_by_user_id) REFERENCES user(user_id_bin);
+	ADD FOREIGN KEY (reposted_by_user_id) REFERENCES user(user_id_text);
 
 -- functions
 DELIMITER $$

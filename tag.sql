@@ -4,24 +4,24 @@ CREATE TABLE tag(
 );
 
 CREATE TABLE post_tag(
-	post_id binary(16),
+	post_id varchar(36),
 	tag_name varchar(255)
 );
 
 CREATE TABLE comment_tag(
-	comment_id binary(16),
+	comment_id varchar(36),
 	tag_name varchar(255)
 );
 
 CREATE TABLE user_follows_tag(
-	user_id binary(16),
+	user_id varchar(36),
     tag_name varchar(255)
 );
 
 -- foreign keys
 -- user_follows_tag references user.user_id
 ALTER TABLE user_follows_tag 
-	ADD FOREIGN KEY (user_id) REFERENCES user(user_id_bin);
+	ADD FOREIGN KEY (user_id) REFERENCES user(user_id_text);
 
 -- user_follows_tag references tag_tag_name    
 ALTER TABLE user_follows_tag 
@@ -37,7 +37,7 @@ ALTER TABLE post_tag
 
 -- comment_tag references comment.comment_id_bin
 ALTER TABLE comment_tag 
-	ADD FOREIGN KEY (comment_id) REFERENCES comment(comment_id_bin) ;
+	ADD FOREIGN KEY (comment_id) REFERENCES comment(comment_id_text) ;
     
 -- comment_tag references tag.tag_name
 ALTER TABLE comment_tag 

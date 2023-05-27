@@ -1,9 +1,9 @@
 CREATE TABLE follower (
-	user_id binary(16),
-    follower_id binary(16),
+	user_id varchar(36),
+    follower_id varchar(36),
     PRIMARY KEY (user_id, follower_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id_bin),
-    FOREIGN KEY (follower_id) REFERENCES user(user_id_bin)
+    FOREIGN KEY (user_id) REFERENCES user(user_id_text),
+    FOREIGN KEY (follower_id) REFERENCES user(user_id_text)
 );
 
 DELIMITER $$

@@ -12,7 +12,7 @@ CREATE TABLE user(
         dob date,
         mobile varchar(255),
         password varchar(255) NOT NULL,
-        CONSTRAINT user_pk PRIMARY KEY (user_id_bin)
+        CONSTRAINT user_pk PRIMARY KEY (user_id_text)
 );
 
 -- insert into user (user_id_bin,username, email, password)

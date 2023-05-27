@@ -1,19 +1,19 @@
 CREATE TABLE comment(
 	comment_id_bin binary(16),
 	comment_id_text varchar(36),
-    post_id binary(16),
-    user_id binary(16),
+    post_id varchar(36),
+    user_id varchar(36),
     likes int DEFAULT 0,
     content varchar(2000) NOT NULL,
-    CONSTRAINT comment_pk PRIMARY KEY (comment_id_bin)
+    CONSTRAINT comment_pk PRIMARY KEY (comment_id_text)
 );
 
 CREATE TABLE comment_likes(
-	user_id binary(16),
-	comment_id binary(16),
+	user_id varchar(36),
+	comment_id varchar(36),
     PRIMARY KEY (user_id, comment_id),
-    FOREIGN KEY (user_id) REFERENCES user(user_id_bin),
-    FOREIGN KEY (comment_id) REFERENCES comment(comment_id_bin)
+    FOREIGN KEY (user_id) REFERENCES user(user_id_text),
+    FOREIGN KEY (comment_id) REFERENCES comment(comment_id_text)
 );
 
 
