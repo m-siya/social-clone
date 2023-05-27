@@ -172,6 +172,9 @@ class Follower(models.Model):
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user", null = True)  # The composite primary key (user_id, follower_id) found, that is not supported. The first column is selected.
     is_followed_by = models.ForeignKey('User', on_delete=models.CASCADE, related_name='is_followed_by', null = True)
 
+    class Meta:
+        managed = False
+        db_table = 'django_session'
 
 class Post(models.Model):
     post_id_bin = models.BinaryField(max_length=16, editable = False)
