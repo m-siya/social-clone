@@ -96,8 +96,8 @@ class Comment(models.Model):
     
     def save(self, *args, **kwargs):
         my_uuid = uuid.uuid4()
-        if not self.user_id_text:
-            self.user_id_text = my_uuid
+        if not self.comment_id_text:
+            self.comment_id_text = my_uuid
         if not self.comment_id_bin:
             self.comment_id_bin = my_uuid.bytes
        
@@ -195,8 +195,8 @@ class Post(models.Model):
     
     def save(self, *args, **kwargs):
         my_uuid = uuid.uuid4()
-        if not self.user_id_text:
-           self.user_id_text = my_uuid
+        if not self.post_id_text:
+           self.post_id_text = my_uuid
         if not self.post_id_bin:
             self.post_id_bin = my_uuid.bytes
        
