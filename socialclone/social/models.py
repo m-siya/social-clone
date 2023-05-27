@@ -79,8 +79,8 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Comment(models.Model):
-    comment_id_bin = models.BinaryField(primary_key=True, max_length=16, editable = False)
-    comment_id_text = models.CharField(max_length=36, blank=True, null=True, editable=False)
+    comment_id_bin = models.BinaryField(max_length=16, editable = False)
+    comment_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
     post = models.ForeignKey('Repost', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey('Repost', models.DO_NOTHING, related_name='comment_user_set', blank=True, null=True)
     likes = models.IntegerField(blank=True, null=True)
@@ -91,8 +91,8 @@ class Comment(models.Model):
         db_table = 'comment'
     
     
-    def __str__(self):
-        return str(uuid(self.comment_id_bin))
+    # def __str__(self):
+    #     return str(uuid(self.comment_id_bin))
     
     def save(self, *args, **kwargs):
         my_uuid = uuid.uuid4()
@@ -169,29 +169,24 @@ class DjangoSession(models.Model):
 
 
 class Follower(models.Model):
-    user = models.OneToOneField('User', models.DO_NOTHING, primary_key=True)  # The composite primary key (user_id, follower_id) found, that is not supported. The first column is selected.
-    follower = models.ForeignKey('User', models.DO_NOTHING, related_name='follower_follower_set')
-
-    class Meta:
-        managed = False
-        db_table = 'follower'
-        unique_together = (('user', 'follower'),)
+    user = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user", null = True)  # The composite primary key (user_id, follower_id) found, that is not supported. The first column is selected.
+    is_followed_by = models.ForeignKey('User', on_delete=models.CASCADE, related_name='is_followed_by', null = True)
 
 
 class Post(models.Model):
-    post_id_bin = models.BinaryField(primary_key=True, max_length=16, editable = False)
-    post_id_text = models.CharField(max_length=36, blank=True, null=True, editable=False)
-    created_on = models.DateTimeField(blank=True, null=True)
+    post_id_bin = models.BinaryField(max_length=16, editable = False)
+    post_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
+    created_on = models.DateTimeField(auto_now_add=True, editable=False)
     user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
-    likes = models.IntegerField(blank=True, null=True)
+    likes = models.IntegerField(blank=True, null=True, editable=False)
     content = models.CharField(max_length=2000)
 
     class Meta:
         managed = False
         db_table = 'post'
 
-    def __str__(self):
-        return str(uuid(self.post_id_bin))
+    # def __str__(self):
+    #     return str(uuid(self.post_id_bin))
     
     def save(self, *args, **kwargs):
         my_uuid = uuid.uuid4()
@@ -240,8 +235,8 @@ class Tag(models.Model):
 
 
 class User(models.Model):
-    user_id_bin = models.BinaryField(primary_key=True, max_length=16, editable=False)
-    user_id_text = models.UUIDField(editable=False)
+    user_id_bin = models.BinaryField(max_length=16, editable=False)
+    user_id_text = models.UUIDField(primary_key=True, editable=False)
     username = models.CharField(unique=True, max_length=30)
     email = models.CharField(unique=True, max_length=255)
     dob = models.DateField(blank=True, null=True)
@@ -252,8 +247,8 @@ class User(models.Model):
         managed = False
         db_table = 'user'
 
-    def __str__(self):
-        return uuid(self.user_id_bin)
+    # def __str__(self):
+    #     return uuid(self.user_id_bin)
     
     def save(self, *args, **kwargs):
         my_uuid = uuid.uuid4()
