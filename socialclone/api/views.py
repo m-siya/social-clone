@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from social.models import User, Post, Comment, Tag, Follower, PostLikes
-from .serializers import UserSerializer, PostSerializer, CommentSerializer, TagSerializer, FollowerSerializer, PostLikesSerializer
+from social.models import User, Post, Comment, Tag, Follower, PostLikes, CommentLikes
+from .serializers import UserSerializer, PostSerializer, CommentSerializer, TagSerializer, FollowerSerializer, PostLikesSerializer, CommentLikesSerializer
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 
@@ -88,6 +88,39 @@ class Followers(generics.ListCreateAPIView):
     #     user = User.objects.get(user_id_text=user_id_text)
     #     return Follower.objects.filter(user = user).exclude(follower = user)
 
+#comments - post comment, like/unlike comments, delete comments, view all comments
+#view/post comment
+class Comments(generics.ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+#delete comment
+class commentDelete(generics.DestroyAPIView):
+    model = Comment
+    serializer_class = CommentSerializer
+    def get_object(self, queryset = None):
+        return Comment.objects.get(comment_id_text=self.kwargs.get("comment_id_text"))
+
+# like/unlike comments
+class LikeUnlikeComment(generics.CreateAPIView, generics.DestroyAPIView):
+    serializer_class = CommentLikesSerializer
+
+    def get_queryset(self):
+        user_id = self.request.data.get('user_id')
+        comment_id = self.request.data.get('comment_id')
+        return CommentLikes.objects.filter(user_id=user_id, comment_id=comment_id)
+
+    def comment(self, request, *args, **kwargs):
+        # Check if the user has already liked the comment
+        existing_like = self.get_queryset().first()
+
+        if existing_like:
+            # If the user has already liked the comment, remove the like
+            self.perform_destroy(existing_like)
+            return Response({'detail': 'Comment unliked successfully.'})
+        else:
+            # If the user has not liked the post, create a new like
+            return self.create(request, *args, **kwargs)
 
     
 @api_view(['GET'])
