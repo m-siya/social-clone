@@ -18,7 +18,10 @@ urlpatterns = [
     path('followers/<uuid:user_id_text>/', views.Followers.as_view(), name='followers'),
     path('comments/', views.Comments.as_view()),
     path('comments/<uuid:comment_id_text>', views.commentDelete.as_view()),
-    path('commentlike/', views.LikeUnlikeComment.as_view())
+    path('commentlike/', views.LikeUnlikeComment.as_view()),
+    path('tags/', views.Tags.as_view()),
+    path('tags/<uuid:tag_name>/', views.DeleteTag.as_view()),
+    path('tag-f-unf/', views.FollowUnfollowTag.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

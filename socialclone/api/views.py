@@ -119,10 +119,43 @@ class LikeUnlikeComment(generics.CreateAPIView, generics.DestroyAPIView):
             self.perform_destroy(existing_like)
             return Response({'detail': 'Comment unliked successfully.'})
         else:
-            # If the user has not liked the post, create a new like
+            # If the user has not liked the comment, create a new like
             return self.create(request, *args, **kwargs)
 
-    
+#tags - follow/unfollow, create/delete
+#create or delete tags
+class Tags(generics.ListCreateAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+class DeleteTag(generics.DestroyAPIView):
+    model = Tag
+    serializer_class = TagSerializer
+    def get_object(self, queryset=None):
+        return Tag.objects.get(tag_name=self.kwargs.get("tag_name"))
+
+#follow/unfollow tags
+class FollowUnfollowTag(generics.CreateAPIView, generics.DestroyAPIView):
+    serializer_class = TagSerializer
+
+    def get_queryset(self):
+        user_id = self.request.data.get('user')
+        tag_name = self.request.data.get('tag')
+        return Follower.objects.filter(user=user_id, tag=tag_name)
+
+    def post(self, request, *args, **kwargs):
+        # Check if the user has already followed the tag
+        followed_tag = self.get_queryset().first()
+
+        if followed_tag:
+            # If the user already follows tag, remove 
+            self.perform_destroy(followed_tag)
+            return Response({'detail': 'Tag unfollowed successfully.'})
+        else:
+            # If the user does not follow tag, create a new followed tag
+            return self.create(request, *args, **kwargs)
+
+
 @api_view(['GET'])
 def getData(request):
     users = User.objects.all()
