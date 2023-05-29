@@ -1,8 +1,11 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from social.models import User, Post, Comment, Tag, Follower, PostLikes, CommentLikes, UserFollowsTag, Repost
+from social.models import (User, Post, Comment, Tag, Follower, PostLikes, CommentLikes,
+                            UserFollowsTag, Repost, PostTag, CommentTag)
 from .serializers import (UserSerializer, PostSerializer, CommentSerializer, TagSerializer, FollowerSerializer, 
-PostLikesSerializer, CommentLikesSerializer, tagfollowserializer, RepostSerializer)
+PostLikesSerializer, CommentLikesSerializer, tagfollowserializer, RepostSerializer, PostTagSerializer, 
+CommentTagSerializer)
+
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 
@@ -216,6 +219,49 @@ class UnfollowTag(generics.DestroyAPIView):
     def get_object(self, queryset=None):
         return UserFollowsTag.objects.get(user_follows_tag_id_text=self.kwargs.get("user_follows_tag_id_text"))
 
+# views for post tags - add tag to post, remove tag from post, view all tags for a post
+# add tag to post
+class AddPostTag(generics.CreateAPIView):
+    serializer_class = PostTagSerializer
+
+# remove tag from post
+class RemovePostTag(generics.RetrieveDestroyAPIView):
+    model = PostTag
+    serializer_class = PostTagSerializer
+
+    def get_object(self, queryset=None):
+        return PostTag.objects.get(post_tag_id_text=self.kwargs.get("post_tag_id_text"))
+
+# view all tags for a post
+class ViewPostTags(generics.ListAPIView):
+    serializer_class = PostTagSerializer
+    queryset = PostTag.objects.all()
+
+    def get_queryset(self):
+        post_id_text = self.kwargs["post_id_text"]
+        return PostTag.objects.filter(post_id=post_id_text)
+    
+# views for comment tags - add tag to comment, remove tag from comment, view all tags for a comment
+# add tag to comment
+class AddCommentTag(generics.CreateAPIView):
+    serializer_class = CommentTagSerializer
+
+# remove tag from comment
+class RemoveCommentTag(generics.RetrieveDestroyAPIView):
+    model = CommentTag
+    serializer_class = CommentTagSerializer
+
+    def get_object(self, queryset=None):
+        return CommentTag.objects.get(comment_tag_id_text=self.kwargs.get("comment_tag_id_text"))
+
+# view all tags for a post
+class ViewCommentTags(generics.ListAPIView):
+    serializer_class = CommentTagSerializer
+    queryset = CommentTag.objects.all()
+
+    def get_queryset(self):
+        comment_id_text = self.kwargs["comment_id_text"]
+        return CommentTag.objects.filter(comment_id=comment_id_text)
 
 @api_view(['GET'])
 def getData(request):

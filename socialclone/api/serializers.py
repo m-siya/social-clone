@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from social.models import User, Comment, Tag, Follower, Post, PostLikes, CommentLikes, UserFollowsTag, Repost
+from social.models import (User, Comment, Tag, Follower, Post, PostLikes, 
+                    CommentLikes, UserFollowsTag, Repost, PostTag, CommentTag)
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,4 +55,16 @@ class RepostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Repost
+        fields = ('__all__')
+
+class PostTagSerializer(serializers.ModelSerializer):
+    post = serializers.PrimaryKeyRelatedField(queryset = Post.objects.all())
+    class Meta:
+        model = PostTag
+        fields = ('__all__')
+
+class CommentTagSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = CommentTag
         fields = ('__all__')

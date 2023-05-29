@@ -28,7 +28,15 @@ urlpatterns = [
     path('tags/', views.Tags.as_view()),
     path('tags/<str:tag_name>/', views.DeleteTag.as_view()),
     path('tag-follow/', views.FollowTag.as_view()),
-    path('tag-unfollow/<user_follows_tag_id_text>', views.UnfollowTag.as_view())
+    path('tag-unfollow/<user_follows_tag_id_text>', views.UnfollowTag.as_view()),
+    path('post-tag/', views.AddPostTag.as_view()),
+    path('post-tag/<uuid:post_tag_id_text>', views.RemovePostTag.as_view()),
+    path('post-tags/<uuid:post_id_text>', views.ViewPostTags.as_view()),
+    path('comment-tag/', views.AddCommentTag.as_view()),
+    path('comment-tag/<uuid:comment_tag_id_text>', views.RemoveCommentTag.as_view()),
+    path('comment-tags/<uuid:comment_id_text>', views.ViewCommentTags.as_view()),
+   # path('comments/<uuid:comment_id_text>', views.commentDelete.as_view()),
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
