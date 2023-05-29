@@ -105,7 +105,7 @@ class Comment(models.Model):
 
 
 class CommentLikes(models.Model):
-    comment_likes_id_text = models.CharField(primary_key=True, max_length=36)
+    comment_likes_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
     user = models.ForeignKey('User', on_delete=models.CASCADE)  # The composite primary key (user_id, comment_id) found, that is not supported. The first column is selected.
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 
@@ -317,7 +317,7 @@ class User(models.Model):
         super().save(*args, **kwargs)
 
 class UserFollowsTag(models.Model):
-    user_follows_tag_id_text = models.CharField(primary_key=True, max_length=36)
+    user_follows_tag_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     tag_name = models.ForeignKey(Tag, on_delete=models.CASCADE, db_column='tag_name', blank=True, null=True)
 

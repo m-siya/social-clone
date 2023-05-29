@@ -44,7 +44,7 @@ class CommentLikesSerializer(serializers.ModelSerializer):
 
 class tagfollowserializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset = User.objects.all())
-    tag = serializers.PrimaryKeyRelatedField(queryset = Tag.objects.all())
+    #tag = serializers.PrimaryKeyRelatedField(queryset = Tag.objects.all())
 
     class Meta:
         model = UserFollowsTag
