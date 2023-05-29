@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from social.models import User, Comment, Tag, Follower, Post, PostLikes, CommentLikes
+from social.models import User, Comment, Tag, Follower, Post, PostLikes, CommentLikes, UserFollowsTag
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -40,4 +40,12 @@ class CommentLikesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CommentLikes
+        fields = ('__all__')
+
+class tagfollowserializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset = User.objects.all())
+    tag = serializers.PrimaryKeyRelatedField(queryset = Tag.objects.all())
+
+    class Meta:
+        model = UserFollowsTag
         fields = ('__all__')
