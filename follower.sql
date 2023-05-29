@@ -1,7 +1,8 @@
 CREATE TABLE follower (
+	follower_id_text varchar(36),
 	user_id varchar(36),
     is_followed_by_id varchar(36),
-    PRIMARY KEY (user_id, is_followed_by_id),
+    PRIMARY KEY (follower_id_text),
     FOREIGN KEY (user_id) REFERENCES user(user_id_text),
     FOREIGN KEY (is_followed_by_id) REFERENCES user(user_id_text)
 );
