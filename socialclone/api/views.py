@@ -1,7 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from social.models import User, Post, Comment, Tag, Follower, PostLikes, CommentLikes, UserFollowsTag
-from .serializers import UserSerializer, PostSerializer, CommentSerializer, TagSerializer, FollowerSerializer, PostLikesSerializer, CommentLikesSerializer, tagfollowserializer
+from social.models import User, Post, Comment, Tag, Follower, PostLikes, CommentLikes, UserFollowsTag, Repost
+from .serializers import (UserSerializer, PostSerializer, CommentSerializer, TagSerializer, FollowerSerializer, 
+PostLikesSerializer, CommentLikesSerializer, tagfollowserializer, RepostSerializer)
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 
@@ -23,7 +24,7 @@ class PostList(generics.ListCreateAPIView):
     serializer_class = PostSerializer
 
 #delete post
-class DeletePost(generics.DestroyAPIView):
+class DeletePost(generics.RetrieveDestroyAPIView):
     model = Post
     serializer_class = PostSerializer
     def get_object(self, queryset=None):
@@ -49,6 +50,31 @@ class LikeUnlikePost(generics.CreateAPIView, generics.DestroyAPIView):
         else:
             # If the user has not liked the post, create a new like
             return self.create(request, *args, **kwargs)
+        
+
+# Repost Views - repost a post, delete a repost
+class MakeRepost(generics.CreateAPIView):
+    serializer_class = RepostSerializer
+
+    def perform_create(self, serializer):
+        #find the user whose post is being reposted
+        #print(self.request.data)
+        post_id_text = self.request.data.get('post')
+      #  post_id_text = self.kwargs['post']
+        #print(post_id_text)
+        post = Post.objects.get(post_id_text = post_id_text)
+       # print(post)
+        user_id_text = post.user_id
+        user = User.objects.get(user_id_text = user_id_text)
+
+        if serializer.is_valid():
+            serializer.save(reposted_from_user=user)
+
+class DeleteRepost(generics.RetrieveDestroyAPIView):
+    serializer_class = RepostSerializer
+    model = Repost
+    def get_object(self, queryset=None):
+        return Repost.objects.get(repost_id_text=self.kwargs.get("repost_id_text"))
         
 # follower views
 # add follower, remove follower, view all follower, view all following

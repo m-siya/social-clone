@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from social.models import User, Comment, Tag, Follower, Post, PostLikes, CommentLikes, UserFollowsTag
+from social.models import User, Comment, Tag, Follower, Post, PostLikes, CommentLikes, UserFollowsTag, Repost
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -48,4 +48,10 @@ class tagfollowserializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserFollowsTag
+        fields = ('__all__')
+
+class RepostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Repost
         fields = ('__all__')
