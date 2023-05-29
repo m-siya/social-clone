@@ -106,8 +106,8 @@ class Comment(models.Model):
 
 class CommentLikes(models.Model):
     comment_likes_id_text = models.CharField(primary_key=True, max_length=36)
-    user = models.ForeignKey('User', models.DO_NOTHING)  # The composite primary key (user_id, comment_id) found, that is not supported. The first column is selected.
-    comment = models.ForeignKey(Comment, models.DO_NOTHING)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)  # The composite primary key (user_id, comment_id) found, that is not supported. The first column is selected.
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -124,8 +124,8 @@ class CommentLikes(models.Model):
 
 class CommentTag(models.Model):
     comment_tag_id_text = models.CharField(primary_key=True, max_length=36)
-    comment = models.ForeignKey(Comment, models.DO_NOTHING, blank=True, null=True)
-    tag_name = models.ForeignKey('Tag', models.DO_NOTHING, db_column='tag_name', blank=True, null=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)
+    tag_name = models.ForeignKey('Tag', on_delete=models.CASCADE, db_column='tag_name', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -229,8 +229,8 @@ class Post(models.Model):
 
 class PostLikes(models.Model):
     post_likes_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
-    user = models.ForeignKey('User', models.DO_NOTHING)  # The composite primary key (user_id, post_id) found, that is not supported. The first column is selected.
-    post = models.ForeignKey(Post, models.DO_NOTHING)
+    user = models.ForeignKey('User', on_delete=models.CASCADE)  # The composite primary key (user_id, post_id) found, that is not supported. The first column is selected.
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     class Meta:
         managed = False
@@ -247,8 +247,8 @@ class PostLikes(models.Model):
 
 class PostTag(models.Model):
     post_tag_id_text = models.CharField(primary_key=True, max_length=36)
-    post = models.ForeignKey('Repost', models.DO_NOTHING, blank=True, null=True)
-    tag_name = models.ForeignKey('Tag', models.DO_NOTHING, db_column='tag_name', blank=True, null=True)
+    post = models.ForeignKey('Repost', on_delete=models.CASCADE, blank=True, null=True)
+    tag_name = models.ForeignKey('Tag', on_delete=models.CASCADE, db_column='tag_name', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -264,9 +264,9 @@ class PostTag(models.Model):
 
 class Repost(models.Model):
     repost_id_text = models.CharField(primary_key=True, max_length=36)
-    post = models.ForeignKey(Post, models.DO_NOTHING, blank=True, null=True)
-    reposted_from_user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
-    reposted_by_user = models.ForeignKey('User', models.DO_NOTHING, related_name='repost_reposted_by_user_set', blank=True, null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
+    reposted_from_user = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True)
+    reposted_by_user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='repost_reposted_by_user_set', blank=True, null=True)
 
     class Meta:
         managed = False
@@ -318,8 +318,8 @@ class User(models.Model):
 
 class UserFollowsTag(models.Model):
     user_follows_tag_id_text = models.CharField(primary_key=True, max_length=36)
-    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
-    tag_name = models.ForeignKey(Tag, models.DO_NOTHING, db_column='tag_name', blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    tag_name = models.ForeignKey(Tag, on_delete=models.CASCADE, db_column='tag_name', blank=True, null=True)
 
     class Meta:
         managed = False
