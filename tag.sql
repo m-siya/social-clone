@@ -33,9 +33,9 @@ ALTER TABLE user_follows_tag
 ALTER TABLE user_follows_tag 
 	ADD FOREIGN KEY (tag_name) REFERENCES tag(tag_name);
     
--- post_tag references repost.post_id
+-- post_tag references rpost.post_id
 ALTER TABLE post_tag 
-	ADD FOREIGN KEY (post_id) REFERENCES repost(post_id) ;
+	ADD FOREIGN KEY (post_id) REFERENCES post(post_id_text) ;
 
 -- post_tag references tag.tag_name   
 ALTER TABLE post_tag 
