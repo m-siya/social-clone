@@ -79,11 +79,11 @@ class AuthUserUserPermissions(models.Model):
 
 
 class Comment(models.Model):
-    comment_id_bin = models.BinaryField(max_length=16, editable = False)
+    comment_id_bin = models.BinaryField(max_length=16)
     comment_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
-    post = models.ForeignKey('Repost', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey('Repost', models.DO_NOTHING, related_name='comment_user_set', blank=True, null=True)
-    likes = models.IntegerField(blank=True, null=True)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True)
+    likes = models.IntegerField(default=0, editable=False)
     content = models.CharField(max_length=2000)
 
     class Meta:
@@ -105,7 +105,8 @@ class Comment(models.Model):
 
 
 class CommentLikes(models.Model):
-    user = models.OneToOneField('User', models.DO_NOTHING, primary_key=True)  # The composite primary key (user_id, comment_id) found, that is not supported. The first column is selected.
+    comment_likes_id_text = models.CharField(primary_key=True, max_length=36)
+    user = models.ForeignKey('User', models.DO_NOTHING)  # The composite primary key (user_id, comment_id) found, that is not supported. The first column is selected.
     comment = models.ForeignKey(Comment, models.DO_NOTHING)
 
     class Meta:
@@ -113,8 +114,16 @@ class CommentLikes(models.Model):
         db_table = 'comment_likes'
         unique_together = (('user', 'comment'),)
 
+    def save(self, *args, **kwargs):
+        my_uuid = uuid.uuid4()
+        if not self.comment_likes_id_text:
+            self.comment_likes_id_text = my_uuid    
+        super().save(*args, **kwargs)
+
+
 
 class CommentTag(models.Model):
+    comment_tag_id_text = models.CharField(primary_key=True, max_length=36)
     comment = models.ForeignKey(Comment, models.DO_NOTHING, blank=True, null=True)
     tag_name = models.ForeignKey('Tag', models.DO_NOTHING, db_column='tag_name', blank=True, null=True)
 
@@ -122,6 +131,13 @@ class CommentTag(models.Model):
         managed = False
         db_table = 'comment_tag'
 
+    def save(self, *args, **kwargs):
+        my_uuid = uuid.uuid4()
+        if not self.comment_tag_id_text:
+            self.comment_tag_id_text= my_uuid    
+        super().save(*args, **kwargs)
+
+    
 
 class DjangoAdminLog(models.Model):
     action_time = models.DateTimeField()
@@ -169,12 +185,22 @@ class DjangoSession(models.Model):
 
 
 class Follower(models.Model):
+    follower_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
     user = models.ForeignKey('User', on_delete=models.CASCADE, related_name="user", null = True)  # The composite primary key (user_id, follower_id) found, that is not supported. The first column is selected.
     is_followed_by = models.ForeignKey('User', on_delete=models.CASCADE, related_name='is_followed_by', null = True)
 
     class Meta:
         managed = False
-        db_table = 'django_session'
+        db_table = 'follower'
+
+    def save(self, *args, **kwargs):
+        my_uuid = uuid.uuid4()
+        if not self.follower_id_text:
+            self.follower_id_text= my_uuid    
+        super().save(*args, **kwargs)
+
+
+    
 
 class Post(models.Model):
     post_id_bin = models.BinaryField(max_length=16, editable = False)
@@ -201,7 +227,8 @@ class Post(models.Model):
         super().save(*args, **kwargs)
 
 class PostLikes(models.Model):
-    user = models.OneToOneField('User', models.DO_NOTHING, primary_key=True)  # The composite primary key (user_id, post_id) found, that is not supported. The first column is selected.
+    post_likes_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
+    user = models.ForeignKey('User', models.DO_NOTHING)  # The composite primary key (user_id, post_id) found, that is not supported. The first column is selected.
     post = models.ForeignKey(Post, models.DO_NOTHING)
 
     class Meta:
@@ -209,17 +236,33 @@ class PostLikes(models.Model):
         db_table = 'post_likes'
         unique_together = (('user', 'post'),)
 
+   
+    def save(self, *args, **kwargs):
+        my_uuid = uuid.uuid4()
+        if not self.post_likes_id_text:
+            self.post_likes_id_text= my_uuid    
+        super().save(*args, **kwargs) 
+
 
 class PostTag(models.Model):
+    post_tag_id_text = models.CharField(primary_key=True, max_length=36)
     post = models.ForeignKey('Repost', models.DO_NOTHING, blank=True, null=True)
     tag_name = models.ForeignKey('Tag', models.DO_NOTHING, db_column='tag_name', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'post_tag'
+    
+    def save(self, *args, **kwargs):
+        my_uuid = uuid.uuid4()
+        if not self.post_tag_id_text:
+            self.post_tag_id_text = my_uuid    
+        super().save(*args, **kwargs) 
+
 
 
 class Repost(models.Model):
+    repost_id_text = models.CharField(primary_key=True, max_length=36)
     post = models.ForeignKey(Post, models.DO_NOTHING, blank=True, null=True)
     reposted_from_user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
     reposted_by_user = models.ForeignKey('User', models.DO_NOTHING, related_name='repost_reposted_by_user_set', blank=True, null=True)
@@ -227,8 +270,15 @@ class Repost(models.Model):
     class Meta:
         managed = False
         db_table = 'repost'
+    
+      
+    def save(self, *args, **kwargs):
+        my_uuid = uuid.uuid4()
+        if not self.repost_id_text:
+            self.repost_id_text = my_uuid    
+        super().save(*args, **kwargs) 
 
-
+    
 class Tag(models.Model):
     tag_name = models.CharField(primary_key=True, max_length=255)
 
@@ -266,9 +316,16 @@ class User(models.Model):
         super().save(*args, **kwargs)
 
 class UserFollowsTag(models.Model):
+    user_follows_tag_id_text = models.CharField(primary_key=True, max_length=36)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
     tag_name = models.ForeignKey(Tag, models.DO_NOTHING, db_column='tag_name', blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'user_follows_tag'
+
+    def save(self, *args, **kwargs):
+        my_uuid = uuid.uuid4()
+        if not self.user_follows_tag_id_text:
+            self.user_follows_tag_id_text = my_uuid    
+        super().save(*args, **kwargs) 

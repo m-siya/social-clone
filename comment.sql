@@ -9,22 +9,23 @@ CREATE TABLE comment(
 );
 
 CREATE TABLE comment_likes(
+	comment_likes_id_text varchar(36),
 	user_id varchar(36),
 	comment_id varchar(36),
-    PRIMARY KEY (user_id, comment_id),
+    PRIMARY KEY (comment_likes_id_text),
     FOREIGN KEY (user_id) REFERENCES user(user_id_text),
     FOREIGN KEY (comment_id) REFERENCES comment(comment_id_text)
 );
 
 
 -- foreign keys
--- comment references post.user_id 
+-- comment references user.user_id 
 ALTER TABLE comment 
-	ADD FOREIGN KEY (user_id) REFERENCES post(user_id) ;
+	ADD FOREIGN KEY (user_id) REFERENCES user(user_id_text) ;
 
 -- repost references post.post_id
 ALTER TABLE comment
-	ADD FOREIGN KEY (post_id) REFERENCES post(post_id);
+	ADD FOREIGN KEY (post_id) REFERENCES post(post_id_text);
     
 -- like comment functions
 DELIMITER $$

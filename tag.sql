@@ -4,18 +4,24 @@ CREATE TABLE tag(
 );
 
 CREATE TABLE post_tag(
+	post_tag_id_text varchar(36),
 	post_id varchar(36),
-	tag_name varchar(255)
+	tag_name varchar(255),
+    PRIMARY KEY (post_tag_id_text)
 );
 
 CREATE TABLE comment_tag(
+	comment_tag_id_text varchar(36),
 	comment_id varchar(36),
-	tag_name varchar(255)
+	tag_name varchar(255),
+    PRIMARY KEY (comment_tag_id_text)
 );
 
 CREATE TABLE user_follows_tag(
+	user_follows_tag_id_text varchar(36),
 	user_id varchar(36),
-    tag_name varchar(255)
+    tag_name varchar(255),
+    PRIMARY KEY (user_follows_tag_id_text)
 );
 
 -- foreign keys

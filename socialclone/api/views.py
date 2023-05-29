@@ -64,7 +64,7 @@ class AddRemoveFollower(generics.CreateAPIView, generics.DestroyAPIView):
     def get_queryset(self):
         user_id = self.request.data.get('user')
         follower_id = self.request.data.get('follower')
-        return Follower.objects.filter(user=user_id, follower=follower_id)
+        return Follower.objects.filter(user=user_id, is_followed_by=follower_id)
 
     def post(self, request, *args, **kwargs):
         # Check if the follower has already followed the user

@@ -10,15 +10,18 @@ CREATE TABLE post(
 
 -- reposts
 CREATE TABLE repost (
+	repost_id_text varchar(36),
 	post_id varchar(36),
     reposted_from_user_id varchar(36),
-    reposted_by_user_id varchar(36)
+    reposted_by_user_id varchar(36),
+    CONSTRAINT repost_id_text PRIMARY KEY (repost_id_text)
 );
 
 CREATE TABLE post_likes(
+	post_likes_id_text varchar(36),
 	user_id varchar(36),
 	post_id varchar(36),
-    PRIMARY KEY (user_id, post_id),
+    PRIMARY KEY (post_likes_id_text),
     FOREIGN KEY (user_id) REFERENCES user(user_id_text),
     FOREIGN KEY (post_id) REFERENCES post(post_id_text)
 );
