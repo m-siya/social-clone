@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from social.models import User, Post, Comment, Tag, Follower, PostLikes, CommentLikes
-from .serializers import UserSerializer, PostSerializer, CommentSerializer, TagSerializer, FollowerSerializer, PostLikesSerializer, CommentLikesSerializer
+from social.models import User, Post, Comment, Tag, Follower, PostLikes, CommentLikes, UserFollowsTag
+from .serializers import UserSerializer, PostSerializer, CommentSerializer, TagSerializer, FollowerSerializer, PostLikesSerializer, CommentLikesSerializer, tagfollowserializer
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 
@@ -136,12 +136,12 @@ class DeleteTag(generics.DestroyAPIView):
 
 #follow/unfollow tags
 class FollowUnfollowTag(generics.CreateAPIView, generics.DestroyAPIView):
-    serializer_class = TagSerializer
+    serializer_class = tagfollowserializer
 
     def get_queryset(self):
         user_id = self.request.data.get('user')
         tag_name = self.request.data.get('tag')
-        return Follower.objects.filter(user=user_id, tag=tag_name)
+        return UserFollowsTag.objects.filter(user=user_id, tag_name=tag_name)
 
     def post(self, request, *args, **kwargs):
         # Check if the user has already followed the tag

@@ -180,12 +180,12 @@ class Post(models.Model):
     post_id_bin = models.BinaryField(max_length=16, editable = False)
     post_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
     created_on = models.DateTimeField(auto_now_add=True, editable=False)
-    user = models.ForeignKey('User', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey('User', on_delete = models.CASCADE, blank=True, null=True)
     likes = models.IntegerField(blank=True, null=True, editable=False)
     content = models.CharField(max_length=2000)
 
     class Meta:
-        managed = False
+        #managed = False
         db_table = 'post'
 
     # def __str__(self):
