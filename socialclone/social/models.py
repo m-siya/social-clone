@@ -190,6 +190,7 @@ class Follower(models.Model):
     is_followed_by = models.ForeignKey('User', on_delete=models.CASCADE, related_name='is_followed_by', null = True)
 
     class Meta:
+        unique_together = (('user', 'is_followed_by'),)
         managed = False
         db_table = 'follower'
 
