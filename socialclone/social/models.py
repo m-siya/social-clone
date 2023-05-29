@@ -123,9 +123,9 @@ class CommentLikes(models.Model):
 
 
 class CommentTag(models.Model):
-    comment_tag_id_text = models.CharField(primary_key=True, max_length=36)
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True, null=True)
-    tag_name = models.ForeignKey('Tag', on_delete=models.CASCADE, db_column='tag_name', blank=True, null=True)
+    comment_tag_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    tag_name = models.ForeignKey('Tag', on_delete=models.CASCADE, db_column='tag_name')
 
     class Meta:
         managed = False
@@ -246,9 +246,9 @@ class PostLikes(models.Model):
 
 
 class PostTag(models.Model):
-    post_tag_id_text = models.CharField(primary_key=True, max_length=36)
-    post = models.ForeignKey('Repost', on_delete=models.CASCADE, blank=True, null=True)
-    tag_name = models.ForeignKey('Tag', on_delete=models.CASCADE, db_column='tag_name', blank=True, null=True)
+    post_tag_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    tag_name = models.ForeignKey('Tag', on_delete=models.CASCADE, db_column='tag_name',)
 
     class Meta:
         managed = False
@@ -263,9 +263,9 @@ class PostTag(models.Model):
 
 
 class Repost(models.Model):
-    repost_id_text = models.CharField(primary_key=True, max_length=36)
+    repost_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True, null=True)
-    reposted_from_user = models.ForeignKey('User', on_delete=models.CASCADE, blank=True, null=True)
+    reposted_from_user = models.ForeignKey('User', on_delete=models.CASCADE, editable=False)
     reposted_by_user = models.ForeignKey('User', on_delete=models.CASCADE, related_name='repost_reposted_by_user_set', blank=True, null=True)
 
     class Meta:
@@ -274,10 +274,13 @@ class Repost(models.Model):
     
       
     def save(self, *args, **kwargs):
+        #auto create uuid for repost_id_text
         my_uuid = uuid.uuid4()
         if not self.repost_id_text:
-            self.repost_id_text = my_uuid    
+            self.repost_id_text = my_uuid  
         super().save(*args, **kwargs) 
+
+    
 
     
 class Tag(models.Model):
