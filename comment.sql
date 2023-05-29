@@ -18,13 +18,13 @@ CREATE TABLE comment_likes(
 
 
 -- foreign keys
--- comment references repost.reposted_by_user_id 
+-- comment references post.user_id 
 ALTER TABLE comment 
-	ADD FOREIGN KEY (user_id) REFERENCES repost(reposted_by_user_id) ;
+	ADD FOREIGN KEY (user_id) REFERENCES post(user_id) ;
 
 -- repost references post.post_id
 ALTER TABLE comment
-	ADD FOREIGN KEY (post_id) REFERENCES repost(post_id);
+	ADD FOREIGN KEY (post_id) REFERENCES post(post_id);
     
 -- like comment functions
 DELIMITER $$
