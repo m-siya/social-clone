@@ -13,6 +13,8 @@ urlpatterns = [
     path('post-list/', views.PostList.as_view()),
     path('post-list/<uuid:post_id_text>', views.DeletePost.as_view()),
     path('post-like/', views.LikeUnlikePost.as_view()),
+    path('repost/', views.MakeRepost.as_view()),
+    path('repost/<uuid:repost_id_text>', views.DeleteRepost.as_view()),
    # path('follower-list/', views.FollowerList.as_view()),
     path('follower-add-remove/', views.AddRemoveFollower.as_view()),
     path('followers/<uuid:user_id_text>/', views.Followers.as_view(), name='followers'),
