@@ -31,7 +31,7 @@ class DeletePost(generics.RetrieveDestroyAPIView):
         return Post.objects.get(post_id_text=self.kwargs.get("post_id_text"))
     
 #like and unlike post
-class LikeUnlikePost(generics.CreateAPIView, generics.DestroyAPIView):
+class LikePost(generics.CreateAPIView):
     serializer_class = PostLikesSerializer
 
     def get_queryset(self):
@@ -45,12 +45,18 @@ class LikeUnlikePost(generics.CreateAPIView, generics.DestroyAPIView):
 
         if existing_like:
             # If the user has already liked the post, remove the like
-            self.perform_destroy(existing_like)
-            return Response({'detail': 'Post unliked successfully.'})
+            return Response({'detail': 'Post already liked.'})
         else:
             # If the user has not liked the post, create a new like
             return self.create(request, *args, **kwargs)
-        
+
+class UnlikePost(generics.DestroyAPIView):
+    model = PostLikes
+    serializer_class = PostLikesSerializer
+    def get_object(self, queryset=None):
+        return PostLikes.objects.get(post_likes_id_text=self.kwargs.get("post_likes_id_text"))
+
+
 
 # Repost Views - repost a post, delete a repost
 class MakeRepost(generics.CreateAPIView):
@@ -83,8 +89,8 @@ class DeleteRepost(generics.RetrieveDestroyAPIView):
 #     queryset = Follower.objects.all()
 #     serializer_class = FollowerSerializer
 
-# add and remove follower
-class AddRemoveFollower(generics.CreateAPIView, generics.DestroyAPIView):
+# add follower
+class AddFollower(generics.CreateAPIView):
     serializer_class = FollowerSerializer
 
     def get_queryset(self):
@@ -98,11 +104,17 @@ class AddRemoveFollower(generics.CreateAPIView, generics.DestroyAPIView):
 
         if existing_follower:
             # If the user has already followed, remove 
-            self.perform_destroy(existing_follower)
-            return Response({'detail': 'User unfollowed successfully.'})
+            return Response({'detail': 'User already followed.'})
         else:
             # If the user has not followed, create a new follower
             return self.create(request, *args, **kwargs)
+
+# remove follower
+class RemoveFollower(generics.DestroyAPIView):
+    model = Follower
+    serializer_class = FollowerSerializer
+    def get_object(self, queryset=None):
+        return Follower.objects.get(follower_id_text=self.kwargs.get("follower_id_text"))
 
 # view all followers
 class Followers(generics.ListAPIView):
@@ -139,7 +151,7 @@ class commentDelete(generics.DestroyAPIView):
         return Comment.objects.get(comment_id_text=self.kwargs.get("comment_id_text"))
 
 # like/unlike comments
-class LikeUnlikeComment(generics.CreateAPIView, generics.DestroyAPIView):
+class LikeComment(generics.CreateAPIView):
     serializer_class = CommentLikesSerializer
 
     def get_queryset(self):
@@ -153,11 +165,17 @@ class LikeUnlikeComment(generics.CreateAPIView, generics.DestroyAPIView):
 
         if existing_like:
             # If the user has already liked the comment, remove the like
-            self.perform_destroy(existing_like)
-            return Response({'detail': 'Comment unliked successfully.'})
+            return Response({'detail': 'Comment already liked'})
         else:
             # If the user has not liked the comment, create a new like
             return self.create(request, *args, **kwargs)
+
+class UnlikeComment(generics.DestroyAPIView):
+    model = CommentLikes
+    serializer_class = CommentLikesSerializer
+    def get_object(self, queryset=None):
+        return CommentLikes.objects.get(comment_likes_id_text=self.kwargs.get("comment_likes_id_text"))
+
 
 #tags - follow/unfollow, create/delete
 #create or delete tags
@@ -172,7 +190,7 @@ class DeleteTag(generics.DestroyAPIView):
         return Tag.objects.get(tag_name=self.kwargs.get("tag_name"))
 
 #follow/unfollow tags
-class FollowUnfollowTag(generics.CreateAPIView, generics.DestroyAPIView):
+class FollowTag(generics.CreateAPIView):
     serializer_class = tagfollowserializer
 
     def get_queryset(self):
@@ -186,11 +204,17 @@ class FollowUnfollowTag(generics.CreateAPIView, generics.DestroyAPIView):
 
         if followed_tag:
             # If the user already follows tag, remove 
-            self.perform_destroy(followed_tag)
-            return Response({'detail': 'Tag unfollowed successfully.'})
+            return Response({'detail': 'Tag already followed.'})
         else:
             # If the user does not follow tag, create a new followed tag
             return self.create(request, *args, **kwargs)
+        
+
+class UnfollowTag(generics.DestroyAPIView):
+    model = UserFollowsTag
+    serializer_class = tagfollowserializer
+    def get_object(self, queryset=None):
+        return UserFollowsTag.objects.get(user_follows_tag_id_text=self.kwargs.get("user_follows_tag_id_text"))
 
 
 @api_view(['GET'])
