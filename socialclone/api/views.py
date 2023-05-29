@@ -79,14 +79,25 @@ class AddRemoveFollower(generics.CreateAPIView, generics.DestroyAPIView):
             return self.create(request, *args, **kwargs)
 
 # view all followers
-class Followers(generics.ListCreateAPIView):
+class Followers(generics.ListAPIView):
     queryset = Follower.objects.all()
     serializer_class = FollowerSerializer
 
-    # def get_queryset(self):
-    #     user_id_text = self.kwargs["user_id_text"]
-    #     user = User.objects.get(user_id_text=user_id_text)
-    #     return Follower.objects.filter(user = user).exclude(follower = user)
+    def get_queryset(self):
+        user_id_text = self.kwargs["user_id_text"]
+        user = User.objects.get(user_id_text=user_id_text)
+        return Follower.objects.filter(user = user).exclude(is_followed_by = user)
+
+# view following
+class Following(generics.ListAPIView):
+    queryset = Follower.objects.all()
+    serializer_class = FollowerSerializer
+
+    def get_queryset(self):
+        user_id_text = self.kwargs["user_id_text"]
+        user = User.objects.get(user_id_text= user_id_text)
+        return Follower.objects.filter(is_followed_by = user)
+
 
 #comments - post comment, like/unlike comments, delete comments, view all comments
 #view/post comment
