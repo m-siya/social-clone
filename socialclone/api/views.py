@@ -1,5 +1,4 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from social.models import (User, Post, Comment, Tag, Follower, PostLikes, CommentLikes,
                             UserFollowsTag, Repost, PostTag, CommentTag)
 from .serializers import (UserSerializer, PostSerializer, CommentSerializer, TagSerializer, FollowerSerializer, 
@@ -262,30 +261,3 @@ class ViewCommentTags(generics.ListAPIView):
     def get_queryset(self):
         comment_id_text = self.kwargs["comment_id_text"]
         return CommentTag.objects.filter(comment_id=comment_id_text)
-
-@api_view(['GET'])
-def getData(request):
-    users = User.objects.all()
-    serializer = UserSerializer(users, many=True)
-    return Response(serializer.data)
-
-@api_view(['POST'])
-def addUser(request):
-    serializer = UserSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-    return Response(serializer.data)
-
-@api_view(['PUT'])
-def updateData(request):
-    users = User.objects.get(UserID=request.data['user_id_bin'])
-    serializer = UserSerializer(request, data = request.data)
-    if serializer.is_valid():
-        serializer.save()
-    return Response(serializer.data)
-
-@api_view
-def deleteUser(request):
-    users = User.objects.get(UserID = request.data)
-    users.delete()
-    return Response()
