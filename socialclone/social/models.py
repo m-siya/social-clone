@@ -118,7 +118,22 @@ class CommentLikes(models.Model):
         my_uuid = uuid.uuid4()
         if not self.comment_likes_id_text:
             self.comment_likes_id_text = my_uuid    
-        super().save(*args, **kwargs)
+
+        comment = self.comment
+        print(self.comment)
+       # comment = Comment.objects.get(comment_id_text = comment_id)
+        print(comment)
+        comment.likes += 1
+        comment.save()
+        super().save(*args, **kwargs) 
+    
+    def delete(self, *args, **kwargs):
+        comment_id = self.comment.comment_id_text
+        comment = Comment.objects.get(comment_id_text = comment_id)
+        comment.likes -= 1
+        comment.save()
+        super().delete(*args, **kwargs)
+
 
 
 
@@ -208,7 +223,7 @@ class Post(models.Model):
     post_id_text = models.CharField(primary_key=True, max_length=36, editable=False)
     created_on = models.DateTimeField(auto_now_add=True, editable=False)
     user = models.ForeignKey('User', on_delete = models.CASCADE, blank=True, null=True)
-    likes = models.IntegerField(blank=True, null=True, editable=False)
+    likes = models.IntegerField(editable=False, default = 0)
     content = models.CharField(max_length=2000)
 
     class Meta:
@@ -239,10 +254,27 @@ class PostLikes(models.Model):
 
    
     def save(self, *args, **kwargs):
+        # done only when object created
         my_uuid = uuid.uuid4()
         if not self.post_likes_id_text:
             self.post_likes_id_text= my_uuid    
+
+        post_id = self.post.post_id_text
+        #print(post_id)
+        post = Post.objects.get(post_id_text = post_id)
+        post.likes += 1
+        #print(post.likes)
+        post.save()
+
+
         super().save(*args, **kwargs) 
+    
+    def delete(self, *args, **kwargs):
+        post_id = self.post.post_id_text
+        post = Post.objects.get(post_id_text = post_id)
+        post.likes -= 1
+        post.save()
+        super().delete(*args, **kwargs)
 
 
 class PostTag(models.Model):

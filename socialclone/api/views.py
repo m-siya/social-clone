@@ -53,7 +53,7 @@ class LikePost(generics.CreateAPIView):
             # If the user has not liked the post, create a new like
             return self.create(request, *args, **kwargs)
 
-class UnlikePost(generics.DestroyAPIView):
+class UnlikePost(generics.RetrieveDestroyAPIView):
     model = PostLikes
     serializer_class = PostLikesSerializer
     def get_object(self, queryset=None):
@@ -162,7 +162,7 @@ class LikeComment(generics.CreateAPIView):
         comment_id = self.request.data.get('comment_id')
         return CommentLikes.objects.filter(user_id=user_id, comment_id=comment_id)
 
-    def comment(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         # Check if the user has already liked the comment
         existing_like = self.get_queryset().first()
 

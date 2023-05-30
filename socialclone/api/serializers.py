@@ -29,7 +29,7 @@ class FollowerSerializer(serializers.ModelSerializer):
 
 class PostLikesSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
+    #post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
 
     class Meta:
         model = PostLikes
