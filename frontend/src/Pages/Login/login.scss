@@ -1,20 +1,21 @@
 .login{
 padding: 0;
 height: 100vh;
-background: url(https://www.icolorpalette.com/wp-content/themes/icolorpalette-child/solid.php?c=45a278);
-// background: url(https://images.pexels.com/photos/13633183/pexels-photo-13633183.jpeg?auto=compress&cs=tinysrgb&w=600) center;
-// background-size: cover;
+background-color: #FF9B42;
+background: linear-gradient(rgb(255, 155, 66, 1.0), rgb(115, 69, 29, 1.0));
+//background: url(https://www.icolorpalette.com/wp-content/themes/icolorpalette-child/solid.php?c=45a278);
 display: flex;
 align-items: center;
 justify-content: center;
+overflow: hidden;
     .card1{
         transform: rotate(30deg);
         transform-origin: right;
-        margin-right: 9px;
+        margin-right: 10px;
         width: 50%;
-        min-height: 100vh;
+        min-height: 200%;
         display: flex;
-        //background-color: aliceblue;
+        background-color: #EDDEA4;
         .left{
             transform: rotate(-30deg);
             flex: 1;
@@ -22,6 +23,8 @@ justify-content: center;
             flex-direction: column;
             gap: 10px;
             justify-content: center;
+            padding-top: 40%;
+            padding-left: 10px;
             h1{
                font-size: 60px;
                line-height: 40px;
@@ -33,16 +36,19 @@ justify-content: center;
             button{
                 width: 30%;
                 padding: 5px;
-                background-color: blanchedalmond;
-                border: 0rch;
-                color: rgb(213, 84, 79);
+                background-color: #F7A072;
+                border: none;
+                border-radius: 6px;
+                color: darkslategrey;
+                font-weight: bold;
+                cursor: pointer;
             }
         }
     }
     .card2{
         transform: rotate(30deg);
         transform-origin: (right);
-        width: 35%;
+        width: 40%;
         margin-left: 60px;
         height: 40%;
         display: flex;
@@ -52,11 +58,35 @@ justify-content: center;
             display: flex;
             flex-direction: column;
             justify-content: end;
-            gap: 10px;
-            h1{}
+            padding-top: 65%;
+            padding-left: 12%;
+            gap: 8px;
+            h1{
+                color: darkslategrey;
+
+            }
             form{
-                input{}
-                button{}
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                input{
+                    width: 73%;
+                    border: none;
+                    background-color: #D9E5D6;
+                    border-bottom: lightgray;
+                    border-radius: 10px;
+                    padding: 10px 5px;
+                }
+                button{
+                width: 30%;
+                padding: 5px;
+                background-color: #F7A072;
+                border: none;
+                border-radius: 6px;
+                color: darkslategrey;
+                font-weight: bold;
+                cursor: pointer;
+                }
             }
         }
     }
