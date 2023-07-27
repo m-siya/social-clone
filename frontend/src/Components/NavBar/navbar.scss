@@ -1,5 +1,8 @@
+@import "../../theme.scss";
+
 .navBar {
-    background-color: #2D2D2D;
+    @include themify($themes){
+    background-color: themed("background");
     position: fixed;
     height: 100%;
     width: 130px;
@@ -9,15 +12,17 @@
     overflow-x: hidden;
     padding-top: 60px;
     transition: width 0.5s;
-
+    border-right: 2px solid themed("borders");
     &.closed {
         width: 50px;
     }
 
     .toggleButton {
+        background-color: themed("background2");
         position: absolute;
         top: 10px;
-        border: none;
+        border: 0rch;
+        border-radius: 6px;
         font-size: 25px;
         margin-left: 10px;
 
@@ -26,11 +31,11 @@
     .navLinks {
         display: flex;
         flex-direction:column;
-
+        gap: 10px;
         a {
             text-decoration: none;
             font-size: 25px;
-            color: #c6c6c6;
+            color: themed("textcolor1");
             display: block;
             padding-left: 10px;
             transition-duration: 1s;
@@ -39,4 +44,4 @@
         
     }
 }
-
+}
