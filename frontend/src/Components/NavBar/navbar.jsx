@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {BiSolidHome, BiSolidUser, BiSolidSearch, BiSolidLogOut, BiArrowFromLeft, BiArrowFromRight} from 'react-icons/bi';
+import {BiSolidHome, BiSolidUser, BiSolidSearch, BiSolidLogOut, BiArrowFromLeft, BiArrowFromRight, BiMoon} from 'react-icons/bi';
 import "./navbar.scss"
+import { DarkModeContext } from "../../Context/darkmodecontext";
+import { useContext } from "react";
 
 
 const NavBar = () => {
+
+    const {toggle} = useContext(DarkModeContext)
+
     const [isNavOpen, setIsNavOpen] = useState(false);
 
     const toggleNav = () => {
@@ -31,6 +36,9 @@ const NavBar = () => {
                         <a href="logout">
                             <BiSolidLogOut/> Logout
                         </a>
+                        <a>
+                            <BiMoon onClick={toggle}/> Change Theme
+                        </a>
                     </>
                 ) : (
                     <>
@@ -45,6 +53,9 @@ const NavBar = () => {
                         </a>
                         <a href="logout">
                             <BiSolidLogOut/>
+                        </a>
+                        <a>
+                            <BiMoon/>
                         </a>
                     </>
                 )}               
