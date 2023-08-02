@@ -14,18 +14,18 @@ const Comment = ({username, commentText, timeStamp}) => {
 
     return (
         <div className="comment" style={{ height: commentHeight}}>
-        <div className="commentHeader">
-            <div className="username">
-                {username}
+            <div className="commentHeader">
+                <div className="username">
+                    {username}
+                </div>
+                <div className="timeStamp">
+                    {timeStamp}
+                </div>
             </div>
-            <div className="timeStamp">
-                {timeStamp}
-            </div>
-        </div>
         
-        <div className="commentText" ref={commentRef}>
-            {commentText}
-        </div>
+            <div className="commentText" ref={commentRef}>
+                {commentText}
+            </div>
     </div>
     )
 }

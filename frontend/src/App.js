@@ -1,14 +1,23 @@
+//pages imports
 import Login from "./Pages/Login/login";
 import Signup from "./Pages/SignUp/signup";
-import NavBar from "./Components/NavBar/navbar";
 import Home from "./Pages/Home/home";
+import Profile from "./Pages/Profile/profile";
+
+//components imports
+import NavBar from "./Components/NavBar/navbar";
+
+//styles imports
 import "./theme.scss"
-//import Profile from "./Pages/Profile/profile"
+
+//react imports
 import {
   createBrowserRouter,
   Navigate,
   RouterProvider,
+  Outlet
 } from "react-router-dom";
+
 import { useContext } from "react";
 import { DarkModeContext } from "./Context/darkmodecontext";
 import { AuthContext } from "./Context/authentication";
@@ -25,9 +34,9 @@ function App() {
     return(
       <div className={`theme-${DarkMode?"dark":"light"}`}>
         <NavBar/>
-        <div style={{flex: 6}}>
-          {/* <Outlet/> */}
-        </div>
+        {/* <div style={{flex: 6}}> */}
+          <Outlet/>
+        {/* </div> */}
       </div>
     )
   }
@@ -41,7 +50,7 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path:"/",
+      //path:"/",
       element: (
       <ProtectedRoute>
         <Layout/>
@@ -52,10 +61,10 @@ function App() {
           path:"/",
           element:<Home/>
         },
-        // {
-        //   path:"/profile/:id",
-        //   element:<Profile/>
-        // }
+        {
+          path:"/profile/",
+          element:<Profile/>
+        }
       ]
     },
     {
