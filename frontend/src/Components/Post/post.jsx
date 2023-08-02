@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import "./post.scss"
+import CommentPage from "../CommentPage/commentPage";
 
-const Post = ({username, postText, timeStamp}) => {
+const Post = ({username, postText, timeStamp, comments}) => {
     const postRef = useRef(null);
     const [postHeight, setPostHeight] = useState(null);
+
+    const [openComments, setOpenComments] = useState(false);
 
     useEffect(() => {
         if (postRef.current) {
@@ -11,6 +14,11 @@ const Post = ({username, postText, timeStamp}) => {
             setPostHeight(height);
         }
     }, [postHeight]);
+
+
+    const handleCommentsButtonClick = () => {
+        setOpenComments(!openComments);
+    }
 
     return (
         <div className="post" style={{ height: postHeight}}>
@@ -27,10 +35,13 @@ const Post = ({username, postText, timeStamp}) => {
                 {postText}
             </div>
             <div className="commentLink">
-                <a href="#comments">
-                    Comments
-                </a>
+                <button onClick={handleCommentsButtonClick}> Comments </button>            
             </div>
+
+            {openComments && (
+                <CommentPage comments={comments}/>
+            )}
+
         </div>
     )
 }

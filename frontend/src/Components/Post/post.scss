@@ -7,6 +7,7 @@
     border-radius: 7px;
     margin-left: 55px;
     margin-bottom: 20px;
+    margin-right: 10px;
     width: 600px;
 
     --border-radius: 7px;
@@ -46,12 +47,13 @@
     }
 
     .commentLink {
-       a {
+        button {
+            background-color: black;
             display: block;
             text-decoration: none;
             text-align: right;
-            height: 20px;
-            padding: 10px;
+            height: 30px;
+            padding: 13px;
             border-style: solid;
             border-radius: 7px;
             border-width: 1px;

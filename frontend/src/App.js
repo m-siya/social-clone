@@ -9,6 +9,8 @@ import NavBar from "./Components/NavBar/navbar";
 
 //styles imports
 import "./theme.scss"
+
+//react imports
 import {
   createBrowserRouter,
   Navigate,
