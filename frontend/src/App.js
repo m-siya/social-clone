@@ -3,6 +3,7 @@ import Login from "./Pages/Login/login";
 import Signup from "./Pages/SignUp/signup";
 import Home from "./Pages/Home/home";
 import Profile from "./Pages/Profile/profile";
+import Search from "./Pages/Search/search";
 
 //components imports
 import NavBar from "./Components/NavBar/navbar";
@@ -64,6 +65,10 @@ function App() {
         {
           path:"/profile/",
           element:<Profile/>
+        },
+        {
+          path:"/search/",
+          element:<Search/>
         }
       ]
     },
