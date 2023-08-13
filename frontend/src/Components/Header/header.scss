@@ -1,0 +1,17 @@
+@import "../../theme.scss";
+
+.header {
+    @include themify($themes){
+        background-color: themed("background");
+        position: fixed;
+        height: 50px;
+        width: 100%;
+        margin-left: 50px;
+        top: 0;
+        color: themed("textcolor1");
+        font-size: 30px;
+        padding: 10px;
+        padding-left: 20px;
+        
+    }
+}
