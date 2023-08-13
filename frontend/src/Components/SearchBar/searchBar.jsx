@@ -7,19 +7,24 @@ const SearchBar = ({setResults}) => {
     const [input, setInput] = useState("");
 
     const fetchData = (value) => {
-        fetch("https://jsonplaceholder.typicode.com/users")
+        fetch("http://localhost:8000")
             .then((response) => response.json())
+            // .then(data => {
+            //     console.log(data);
+            // })
             .then((json) => {
                 const results = json.filter((user) => {
                     return (
                             value && 
                             user &&
-                            user.name && 
-                            user.name.toLowerCase().includes(value)
+                            user.username && 
+                            user.username.toLowerCase().includes(value)
                     );
                 });
+                //console.log(results);
                 setResults(results);
             });
+
 
     };
 

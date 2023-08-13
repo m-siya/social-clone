@@ -8,8 +8,12 @@ const Search = () => {
 
     return (
         <div className="search">
-            <SearchBar setResults={setResults}/>
-            <SearchResultList results={results}/>
+            <div className="searchBar">
+                <SearchBar setResults={setResults}/>
+            </div>
+            <div className="searchResultList">
+                <SearchResultList results={results}/>
+            </div>
         </div>
     )
 }

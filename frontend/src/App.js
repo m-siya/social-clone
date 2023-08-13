@@ -7,6 +7,7 @@ import Search from "./Pages/Search/search";
 
 //components imports
 import NavBar from "./Components/NavBar/navbar";
+import Header from "./Components/Header/header";
 
 //styles imports
 import "./theme.scss"
@@ -35,6 +36,7 @@ function App() {
     return(
       <div className={`theme-${DarkMode?"dark":"light"}`}>
         <NavBar/>
+        <Header/>
         {/* <div style={{flex: 6}}> */}
           <Outlet/>
         {/* </div> */}
